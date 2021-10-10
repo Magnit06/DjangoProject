@@ -25,6 +25,8 @@ SECRET_KEY = 'django-insecure-!4xfq)8*2*(xex5uxe_fa(-971pbk9qj%&8f2zjl!)3blqr*o6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DEFAULT_CHARSET = "UTF-8"
+
 ALLOWED_HOSTS = []
 
 
@@ -37,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bboard.apps.BboardConfig',
+    'bboard',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +79,13 @@ WSGI_APPLICATION = 'samplesite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'DjangoDb',
+        'HOST': '127.0.0.1',
+        'PORT': 5433,
+        'USER': 'postgres',
+        'PASSWORD': 'rootroot',
+        'CONN_MAX_AGE': 0,
     }
 }
 
@@ -106,14 +114,39 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Samara'
 
-USE_I18N = True
+USE_I18N = True  # автоматический перевод на язык, установленный в LANGUAGE_CODE
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = True  # хранить в БД дату и время с указанием временной зоны
 
+DECIMAL_SEPARATOR = "."
+
+NUMBER_GROUPING = 3
+
+THOUSAND_SEPARATOR = ","
+
+USE_THOUSAND_SEPARATOR = True
+
+SHORT_DATE_FORMAT = "m.d.Y"
+
+SHORT_DATETIME_FORMAT = "m.d.Y H:i:s"
+
+DATE_FORMAT = "d E Y H:i:s"
+
+TIME_FORMAT = "H:i:s"
+
+MONTH_DAY_FORMAT = "F, d"
+
+YEAR_MONTH_FORMAT = "F Y"
+
+DATE_INPUT_FORMAT = ["%d.%m.%Y %H:%M:%S"]
+
+TIME_INPUT_FORMATS = ["%H:%M:%S", "%H:%M:%S.%f", "%H:%M"]
+
+FIRST_DAY_OF_WEEK = 1  # понедельник
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

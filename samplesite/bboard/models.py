@@ -3,11 +3,14 @@ from django.db import models
 
 class Bb(models.Model):
 
-	title = models.CharField(max_length=50, verbose_name="Товар")
+	title = models.CharField(max_length=50, verbose_name="Товар",
+							 help_text="Введите название товара (макс. симв. 50)")
 	content = models.TextField(null=True, blank=True, verbose_name="Описание")
 	price = models.FloatField(null=True, blank=True, verbose_name="Цена")
 	published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name="Опубликовано")
-	rubric = models.ForeignKey("Rubric", null=True, on_delete=models.PROTECT, verbose_name="Рубрика")
+	last_changed = models.DateTimeField(auto_now=True, verbose_name="Дата/время последнего изменения записи")
+	rubric = models.ForeignKey("Rubric", null=True, on_delete=models.PROTECT, default="Без рубрики",
+							   verbose_name="Рубрика", help_text="Выберите рубрику из выпадающего списка")
 
 	class Meta:
 
@@ -27,4 +30,4 @@ class Rubric(models.Model):
 
 		verbose_name_plural = "Рубрики"
 		verbose_name = "Рубрика"
-		ordering = ['name']
+		ordering = ["id"]

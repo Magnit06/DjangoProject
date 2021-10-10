@@ -1,12 +1,32 @@
 {% extends "layout/basic.html" %}
 
 {% block content %}
-{% for bb in bbs %}
-<div>
-    <h2>{{ bb.title }}</h2>
-    <p>{{ bb.content }}</p>
-    <p><a href="{% url 'by_rubric' bb.rubric.pk %}">{{ bb.rubric.name }}</a></p>
-    <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
-</div>
-{% endfor %}
+<table class="table table-striped table-hover" xmlns="http://www.w3.org/1999/html">
+    <thead>
+    <tr>
+        <th class="align-middle">
+            Название
+        </th>
+        <th class="align-middle">
+            Описание
+        </th>
+        <th class="align-middle">
+            Рубрика
+        </th>
+        <th class="align-middle">
+            Дата/время<br>публикации
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for bb in bbs %}
+    <tr>
+        <td><h2>{{ bb.title }}</h2></td>
+        <td><p>{{ bb.content }}</p></td>
+        <td><p><a class="link-info" href="{% url 'by_rubric' bb.rubric.pk %}">{{ bb.rubric.name }}</a></p></td>
+        <td><p>{{ bb.published|date:"d.m.Y H:i:s" }}</p></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

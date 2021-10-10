@@ -1,26 +1,47 @@
-{% load static %}
+{% load bootstrap4 %}
+<!--{% load static %}-->
 
 <!DOCTYPE html>
 <html>
 <head>
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery=True %}
     <meta charset="UTF-8">
     <title>{% block title %}Главная{% endblock %} :: Доска объявлений</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'bboard/style.css' %}">
+    <!--    по причине использования бутстрапа свои стили удалил-->
+    <!--    <link rel="stylesheet" type="text/css" href="{% static 'bboard/style.css' %}">-->
 </head>
 <body>
-<header>
-  <h1>Объявления</h1>
-</header>
-<nav>
-  <a href="{% url 'index' %}">Главная</a>
-  <a href="{% url 'add' %}">Добавить</a>
-  {% for rubric in rubrics %}
-  <a href="{% url 'by_rubric' rubric.pk %}">{{ rubric.name }}</a>
-  {% endfor %}
-</nav>
-<section>
-  {% block content %}
-  {% endblock %}
+<!--фиксируем область навигации-->
+<div class="sticky-top bg-white">
+    <header>
+        <h1 class="mt-2 text-uppercase" align="center">Объявления</h1>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'index' %}">Главная</a>
+        <a class="nav-link" href="{% url 'add' %}">Добавить</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Рубрики
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% for rubric in rubrics %}
+                    <a class="dropdown-item" href="{% url 'by_rubric' rubric.pk %}">{{ rubric.name }}</a>
+                    {% endfor %}
+                </div>
+            </li>
+        </ul>
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Поиск</button>
+        </form>
+    </nav>
+</div>
+<section class="m-2">
+    {% block content %}
+    {% endblock %}
 </section>
 </body>
 </html>
