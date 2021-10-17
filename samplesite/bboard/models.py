@@ -10,12 +10,13 @@ class Bb(models.Model):
 	published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name="Опубликовано")
 	last_changed = models.DateTimeField(auto_now=True, verbose_name="Дата/время последнего изменения записи")
 	rubric = models.ForeignKey("Rubric", null=True, on_delete=models.PROTECT, default="Без рубрики",
-							   verbose_name="Рубрика", help_text="Выберите рубрику из выпадающего списка")
+							   verbose_name="Рубрика", help_text="Выберите рубрику из выпадающего списка",
+							   related_name='bboards')
 
 	class Meta:
 
-		verbose_name_plural = 'Объявления'
-		verbose_name = 'Объявление'
+		verbose_name_plural = 'объявления'
+		verbose_name = 'объявление'
 		ordering = ['-published']
 
 
@@ -28,6 +29,6 @@ class Rubric(models.Model):
 
 	class Meta:
 
-		verbose_name_plural = "Рубрики"
-		verbose_name = "Рубрика"
+		verbose_name_plural = "рубрики"
+		verbose_name = "рубрика"
 		ordering = ["id"]

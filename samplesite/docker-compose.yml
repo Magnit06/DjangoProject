@@ -1,0 +1,57 @@
+version: "3"
+
+
+services:
+  elasticsearch:
+    build:
+      context: ./docker/es
+      dockerfile: Dockerfile
+    container_name: es
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - ./docker/es/es.log:/usr/share/elasticsearch/logs/docker-cluster.log:rw
+    ports:
+      - "9200:9200"
+
+  postgresdb:
+    build:
+      context: ./docker/postgres
+      dockerfile: Dockerfile
+    container_name: postgressql
+    environment:
+      - POSTGRES_PASSWORD=rootroot
+    volumes:
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:rw
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: django-site
+    volumes:
+      - ./:/usr/src/app:rw
+    depends_on:
+      - postgresdb
+      - elasticsearch
+    ports:
+      - "8000:8000"
+
+
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    container_name: django-nginx
+    depends_on:
+      - elasticsearch
+      - web
+      - postgresdb
+    ports:
+      - "80:80"
+    volumes:
+      - ./bboard/static/:/statuc/:rw

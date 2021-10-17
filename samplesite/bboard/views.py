@@ -2,9 +2,13 @@ from django.shortcuts import render
 
 # my import
 from django.views.generic.edit import CreateView
+from rest_framework.viewsets import ModelViewSet
 from django.urls import reverse_lazy
-from .models import Bb, Rubric
+from .models import Bb
+from .models import Rubric
 from .forms import BbForm
+from .serializers import BbSerializer
+from .serializers import RubricSerializer
 
 
 def index(request):
@@ -32,3 +36,15 @@ class BbCreateView(CreateView):
 		context = super().get_context_data(**kwargs)
 		context['rubrics'] = Rubric.objects.all()
 		return context
+
+
+class BbViewSet(ModelViewSet):
+
+	serializer_class = BbSerializer
+	queryset = Bb.objects.all()
+
+
+class RubricViewSet(ModelViewSet):
+
+	serializer_class = RubricSerializer
+	queryset = Rubric.objects.all()
