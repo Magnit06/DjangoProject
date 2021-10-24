@@ -5,11 +5,9 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from rest_framework.viewsets import ModelViewSet
 from django.urls import reverse_lazy
-from .models import Bb
-from .models import Rubric
+from .models import Bb, Rubric
 from .forms import BbForm
-from .serializers import BbSerializer
-from .serializers import RubricSerializer
+from .serializers import BbSerializer, RubricSerializer
 from elasticsearch_dsl import Q
 from .documents import BbDocument
 from .documents import RubricDocument

@@ -1,12 +1,8 @@
-from django.test import TestCase
-from django.test import Client
+from django.test import TestCase, Client
 from django.urls import reverse
 from rest_framework import status
 
-from ..models import Rubric
-from ..models import Bb
-from ..serializers import BbSerializer
-from ..serializers import RubricSerializer
+from ..models import Rubric, Bb
 
 
 class ViewsTestCase(TestCase):

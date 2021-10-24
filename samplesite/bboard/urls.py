@@ -1,12 +1,7 @@
 from django.urls import path
 from django.urls import include
 from rest_framework.routers import DefaultRouter
-from .views import index
-from .views import by_rubric
-from .views import BbCreateView
-from .views import BbViewSet
-from .views import RubricViewSet
-from .views import SearchResult
+from .views import index, by_rubric, BbCreateView, BbViewSet, RubricViewSet, SearchResult
 
 
 router = DefaultRouter()

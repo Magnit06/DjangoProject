@@ -1,7 +1,6 @@
 from django.test import TestCase
 
-from ..models import Bb
-from ..models import Rubric
+from ..models import Bb, Rubric
 
 
 class BbModelTestCase(TestCase):
