@@ -10,7 +10,6 @@ from .forms import BbForm
 from .serializers import BbSerializer, RubricSerializer
 from elasticsearch_dsl import Q
 from .documents import BbDocument
-from .documents import RubricDocument
 
 
 def index(request):
