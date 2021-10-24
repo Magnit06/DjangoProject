@@ -72,7 +72,7 @@ class SearchResult(ListView):
 					'title',
 					'content',
 				],
-				fuzziness='auto')
+				fuzziness='auto')  # корректировка ошибок в запросе
 		return BbDocument.search().query(q)
 
 	def get_context_data(self, **kwargs):
