@@ -33,8 +33,8 @@
                 </div>
             </li>
         </ul>
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+        <form class="d-flex" action="{% url 'search_result' %}" method="get">
+            <input name="q" class="form-control me-2" type="text" placeholder="Поиск" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Поиск</button>
         </form>
     </nav>

@@ -19,10 +19,13 @@ services:
       context: ./docker/postgres
       dockerfile: Dockerfile
     container_name: postgressql
+#    restart: always
     environment:
-      - POSTGRES_PASSWORD=rootroot
+      PGUSER: "postgres"
+      POSTGRES_PASSWORD: "rootroot"
     volumes:
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:rw
+      - pgdata:/var/lib/postgresql/data
     depends_on:
       - elasticsearch
     ports:
@@ -55,3 +58,6 @@ services:
       - "80:80"
     volumes:
       - ./bboard/static/:/statuc/:rw
+
+volumes:
+  pgdata:

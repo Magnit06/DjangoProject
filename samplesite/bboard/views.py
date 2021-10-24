@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # my import
+from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from rest_framework.viewsets import ModelViewSet
 from django.urls import reverse_lazy
@@ -9,6 +10,9 @@ from .models import Rubric
 from .forms import BbForm
 from .serializers import BbSerializer
 from .serializers import RubricSerializer
+from elasticsearch_dsl import Q
+from .documents import BbDocument
+from .documents import RubricDocument
 
 
 def index(request):
@@ -48,3 +52,35 @@ class RubricViewSet(ModelViewSet):
 
 	serializer_class = RubricSerializer
 	queryset = Rubric.objects.all()
+
+
+class SearchResult(ListView):
+
+	template_name = 'bboard/search_result.html'
+	context_object_name = 'bbs'
+
+	def get_queryset(self):
+		"""
+		Выдает результат совпадений с запросом поиска
+		:return: <class "Bb">
+		"""
+		query = self.request.GET.get('q')
+		q = Q(
+				'multi_match',
+				query=query,
+				fields=[
+					'title',
+					'content',
+				],
+				fuzziness='auto')
+		return BbDocument.search().query(q)
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		# вычисляем длину списка с результатом поиска
+		len_search_list = len([x for x in context['bbs']])
+
+		context['len_search_list'] = len_search_list
+		context['rubrics'] = Rubric.objects.all()
+		return context

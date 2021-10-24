@@ -27,8 +27,8 @@ class BbDocument(Document):
 		model = Bb
 		fields = [
 			'title',
-			'price',
 			'content',
+			'price',
 			'published',
 			'last_changed',
 		]
