@@ -20,10 +20,10 @@ class Command(BaseCommand):
 		u = [x for x in range(1, 1001)]  # 1000
 		name = "Рубрика"
 
-		# генерируем суперпользователя
+		print("Генерируем суперпользователя")
 		User.objects.create_superuser(username="admin", email="kfilipppov@mail.ru", password="admin")
 
-		# генерируем первую рубрику "Без рубрики"
+		print("Генерируем первую рубрику 'Без рубрики'")
 		Rubric.objects.create(name="Без рубрики")
 
 		print("Генерируем 9 оставшихся рубрик")
@@ -42,8 +42,8 @@ class Command(BaseCommand):
 		users = User.objects.all()
 		for user in users:
 			for i in range(1000):
-				Bb.objects.create(title=title + " " + str(i + 1) + " " + str(user.name),
-								  content=content + " " + str(i + 1) + " " + str(user.name),
+				Bb.objects.create(title=title + " " + str(i + 1) + " " + str(user.username),
+								  content=content + " " + str(i + 1) + " " + str(user.username),
 								  price=float("".join([random.choice(num) for _ in range(6)])),
 								  rubric=Rubric.objects.get(pk=random.choice(r)),
 								  author=User.objects.get(pk=user.pk))

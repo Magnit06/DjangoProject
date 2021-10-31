@@ -173,7 +173,7 @@ class BbModelTestCase(TestCase):
 		"""
 		bb = Bb.objects.get(pk=1)
 		default_rubric = bb._meta.get_field('rubric').default
-		self.assertEqual("Без рубрики", default_rubric)
+		self.assertEqual(1, default_rubric)
 
 	def test_rubric_label(self):
 		"""
