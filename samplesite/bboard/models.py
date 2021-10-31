@@ -1,5 +1,7 @@
-from django.db import models
+import random
+
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class Bb(models.Model):
@@ -14,7 +16,7 @@ class Bb(models.Model):
 	last_changed = models.DateTimeField(auto_now=True, verbose_name="Дата/время последнего изменения записи")
 	author = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE,
 							   verbose_name="Автор объявления", related_name="author_bboards")
-	rubric = models.ForeignKey("Rubric", null=True, on_delete=models.PROTECT, default="Без рубрики",
+	rubric = models.ForeignKey("Rubric", null=True, on_delete=models.PROTECT, default=1,
 							   verbose_name="Рубрика", help_text="Выберите рубрику из выпадающего списка",
 							   related_name='bboards')
 
@@ -22,7 +24,6 @@ class Bb(models.Model):
 		return self.title
 
 	class Meta:
-
 		verbose_name_plural = 'объявления'
 		verbose_name = 'объявление'
 		ordering = ['-published']
@@ -38,7 +39,6 @@ class Rubric(models.Model):
 		return self.name
 
 	class Meta:
-
 		verbose_name_plural = "рубрики"
 		verbose_name = "рубрика"
 		ordering = ["id"]
@@ -57,7 +57,6 @@ class Comment(models.Model):
 		return self.author
 
 	class Meta:
-
 		verbose_name_plural = 'комментарии'
 		verbose_name = 'комментарий'
 		ordering = ['-created_at']

@@ -44,4 +44,19 @@
     {% endfor %}
     </tbody>
 </table>
+<nav aria-label="My paginator">
+  <ul class="pagination">
+      {% if page.has_previous %}
+    <li class="page-link">
+      <a class="page-link" href="?page={{ page.previous_page_number }}">&lt;</a>
+    </li>
+      {% endif %}
+    <li class="page-link active" aria-current="page">
+      <a class="page-link" href="?page={{ page.number }}">{{page.number}} / {{page.paginator.num_pages}}</a>
+    </li>
+      {% if page.has_next %}
+    <li class="page-link"><a class="page-link" href="?page={{ page.next_page_number }}">&gt;</a></li>
+      {% endif %}
+  </ul>
+</nav>
 {% endblock %}

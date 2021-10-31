@@ -1,10 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import render
 
 # my import
 from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.viewsets import ModelViewSet
@@ -20,7 +20,13 @@ from .documents import BbDocument
 def index(request):
 	bbs = Bb.objects.all()
 	rubrics = Rubric.objects.all()
-	context = {"bbs": bbs, "rubrics": rubrics}
+	paginator = Paginator(bbs, 10)
+	if 'page' in request.GET:
+		page_num = request.GET['page']
+	else:
+		page_num = 1
+	page = paginator.get_page(page_num)
+	context = {"bbs": page.object_list, "rubrics": rubrics, 'page': page}
 	return render(request, 'bboard/index.html', context)
 
 
@@ -28,7 +34,13 @@ def by_rubric(request, rubric_id):
 	bbs = Bb.objects.filter(rubric=rubric_id)
 	rubrics = Rubric.objects.all()
 	current_rubric = Rubric.objects.get(pk=rubric_id)
-	context = {"bbs": bbs, "rubrics": rubrics, "current_rubric": current_rubric}
+	paginator = Paginator(bbs, 10)
+	if 'page' in request.GET:
+		page_num = request.GET['page']
+	else:
+		page_num = 1
+	page = paginator.get_page(page_num)
+	context = {"bbs": page.object_list, "rubrics": rubrics, "current_rubric": current_rubric, 'page': page}
 	return render(request, 'bboard/by_rubric.html', context)
 
 
@@ -106,12 +118,19 @@ class ProfileView(LoginRequiredMixin, ListView):
 
 	def get_queryset(self):
 		bbs = Bb.objects.filter(author=User.objects.get(pk=self.request.user.pk))
-		return bbs
+		paginator = Paginator(bbs, 10)
+		if 'page' in self.request.GET:
+			page_num = self.request.GET['page']
+		else:
+			page_num = 1
+		self.page = paginator.get_page(page_num)
+		return self.page.object_list
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		rubrics = Rubric.objects.all()
 		context['rubrics'] = rubrics
+		context['page'] = self.page
 		return context
 
 
@@ -150,4 +169,55 @@ def bb_detail(request, rubric_pk, pk):
 		'form': form
 	}
 	return render(request, 'bboard/bb_detail.html', context=context)
+
+
+@login_required
+def users_view(request):
+	"""
+	Контроллер показывает страницу списка
+	пользователей. Для АВТОРИЗИРОВАННЫХ
+	:param request:
+	:return:
+	"""
+	all_users = User.objects.all()
+	rubrics = Rubric.objects.all()
+	paginator = Paginator(all_users, 10)
+	if 'page' in request.GET:
+		page_num = request.GET['page']
+	else:
+		page_num = 1
+	page = paginator.get_page(page_num)
+	context = {
+		'all_users': page.object_list,
+		'rubrics': rubrics,
+		'page': page
+	}
+	return render(request, 'bboard/users.html', context=context)
+
+
+@login_required
+def some_user_profile_view(request, pk):
+	"""
+	Контроллер показывает личную
+	страничку выбранного пользователя
+	:param request:
+	:param pk:
+	:return:
+	"""
+	rubrics = Rubric.objects.all()
+	some_user = User.objects.get(pk=pk)
+	bbs = Bb.objects.filter(author=some_user.pk)
+	paginator = Paginator(bbs, 10)
+	if 'page' in request.GET:
+		page_num = request.GET['page']
+	else:
+		page_num = 1
+	page = paginator.get_page(page_num)
+	context = {
+		'rubrics': rubrics,
+		'some_user': some_user,
+		'bbs': page.object_list,
+		'page': page
+	}
+	return render(request, 'accounts/some_user_profile.html', context=context)
 

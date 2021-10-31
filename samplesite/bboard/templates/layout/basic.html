@@ -21,7 +21,8 @@
         <a class="navbar-brand" href="{% url 'index' %}">Главная</a>
         {% if user.is_authenticated %}
         <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
-        <a class="nav-link" href="{% url 'profile' %}">Профиль</a>
+        <a class="nav-link" href="{% url 'users_list' %}">Список пользователей</a>
+        <a class="nav-link" href="{% url 'profile' %}">Мой профиль, {{user.username}}</a>
         <a class="nav-link" href="{% url 'add' %}">Добавить</a>
         {% else %}
         <a class="nav-link" href="{% url 'login' %}">Войти</a>
@@ -40,7 +41,7 @@
             </li>
         </ul>
         <form class="d-flex" action="{% url 'search_result' %}" method="get">
-            <input name="q" class="form-control me-2" type="text" placeholder="Поиск" aria-label="Search">
+            <input name="q" class="form-control me-2" type="text" placeholder="Поиск объявлений" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Поиск</button>
         </form>
     </nav>

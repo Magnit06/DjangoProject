@@ -1,35 +1,43 @@
-{% extends "layout/basic.html" %}
+{% extends 'layout/basic.html' %}
+
+{% block title %}Список пользователей{% endblock %}
 
 {% block content %}
 <table class="table table-striped table-hover" xmlns="http://www.w3.org/1999/html">
     <thead>
     <tr>
         <th class="align-middle">
-            Название
+            № п/п
         </th>
         <th class="align-middle">
-            Описание
+            Фамилия
         </th>
         <th class="align-middle">
-            Рубрика
+            Имя
         </th>
         <th class="align-middle">
-            Автор
+            Логин
         </th>
         <th class="align-middle">
-            Дата/время<br>публикации
+            email
+        </th>
+        <th class="align-middle">
+            Ссылка на профиль
         </th>
     </tr>
     </thead>
     <tbody>
-    {% for bb in bbs %}
+    {% for us in all_users %}
+    {% if us.pk != user.pk %}
     <tr>
-        <td><h2>{{ bb.title }}</h2></td>
-        <td><p>{{ bb.content }}</p></td>
-        <td><p><a class="link-info" href="{% url 'by_rubric' bb.rubric.pk %}">{{ bb.rubric.name }}</a></p></td>
-        <td><p>{{ bb.author.username }}</p></td>
-        <td><p>{{ bb.published|date:"d.m.Y H:i:s" }}</p></td>
+        <td>{{us.pk}}</td>
+        <td>{{us.last_name}}</td>
+        <td>{{us.first_name}}</td>
+        <td>{{us.username}}</td>
+        <td>{{us.email}}</td>
+        <td>Перейти в <a class="link-info" href="{% url 'users_profile_detail' us.pk %}">профиль</a> пользователя</td>
     </tr>
+    {% endif %}
     {% endfor %}
     </tbody>
 </table>
