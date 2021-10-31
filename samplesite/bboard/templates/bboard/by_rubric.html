@@ -19,6 +19,9 @@
             Цена
         </th>
         <th class="align-middle">
+            Автор
+        </th>
+        <th class="align-middle">
             Дата/время<br>публикации
         </th>
         <th class="align-middle">
@@ -33,6 +36,7 @@
         <td><h2>{{ bb.title }}</h2></td>
         <td><p>{{ bb.content }}</p></td>
         <td><p>{{ bb.price }} руб.</p></td>
+        <td><p>{{ bb.author.username }}</p></td>
         <td><p>{{ bb.published|date:"d.m.Y H:i:s" }}</p></td>
         <td><p>{{ bb.last_changed|date:"d.m.Y H:i:s" }}</p></td>
 

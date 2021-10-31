@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 	'bootstrap4',  # my add
 	'rest_framework',  # my add
 	'corsheaders',  # my add
+	'captcha',
 ]
 
 MIDDLEWARE = [
