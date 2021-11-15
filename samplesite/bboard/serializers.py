@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Bb, Rubric
+from .models import Bb, Rubric, Comment
 
 
 class RubricSerializer(serializers.ModelSerializer):
@@ -17,4 +17,14 @@ class BbSerializer(serializers.ModelSerializer):
 	class Meta:
 
 		model = Bb
+		fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+	bb = BbSerializer()
+
+	class Meta:
+
+		model = Comment
 		fields = '__all__'

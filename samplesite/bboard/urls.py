@@ -4,12 +4,13 @@ from django.contrib.auth.views import LoginView, LogoutView
 from rest_framework.routers import DefaultRouter
 from .views import index, by_rubric, BbCreateView, BbViewSet, bb_detail
 from .views import RubricViewSet, SearchResult, ProfileView, users_view
-from .views import some_user_profile_view
+from .views import some_user_profile_view, CommentViewSet
 
 
 router = DefaultRouter()
-router.register('bboard', BbViewSet, basename='bboard')
+router.register('ads', BbViewSet, basename='ads')
 router.register('rubrics', RubricViewSet, basename='rubrics')
+router.register('comments', CommentViewSet, basename='comments')
 
 urlpatterns = [
 	path('captcha/', include('captcha.urls')),

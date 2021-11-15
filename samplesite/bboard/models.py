@@ -1,5 +1,3 @@
-import random
-
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -60,4 +58,3 @@ class Comment(models.Model):
 		verbose_name_plural = 'комментарии'
 		verbose_name = 'комментарий'
 		ordering = ['-created_at']
-

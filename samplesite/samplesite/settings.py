@@ -10,7 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import environ
 from pathlib import Path
+
+env = environ.Env()
+env.read_env(".env")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,14 +23,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!4xfq)8*2*(xex5uxe_fa(-971pbk9qj%&8f2zjl!)3blqr*o6'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
 DEFAULT_CHARSET = "UTF-8"
 
 ALLOWED_HOSTS = ["*"]
+
+# CELERY SETTINGS
+CELERY_TIMEZONE = "Europe/Samara"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
+# CELERY SETTINGS
 
 # Application definition
 
@@ -44,6 +56,7 @@ INSTALLED_APPS = [
 	'rest_framework',  # my add
 	'corsheaders',  # my add
 	'captcha',
+	'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -83,12 +96,12 @@ WSGI_APPLICATION = 'samplesite.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': 'djangodb',
-		'HOST': 'postgresdb',
-		'PORT': 5432,
-		'USER': 'djangouser',
-		'PASSWORD': 'rootroot',
-		'CONN_MAX_AGE': 0,
+		'NAME': env("POSTGRES_DB"),
+		'HOST': env("POSTGRES_HOST"),
+		'PORT': env("POSTGRES_PORT"),
+		'USER': env("POSTGRES_USERNAME"),
+		'PASSWORD': env("POSTGRES_PASSWORD"),
+		'CONN_MAX_AGE': int(env("POSTGRES_CONN_MAX_AGE")),
 	}
 }
 

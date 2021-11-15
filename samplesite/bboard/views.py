@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from .models import Bb, Rubric, Comment
 from .forms import BbForm, CommentForm
-from .serializers import BbSerializer, RubricSerializer
+from .serializers import BbSerializer, RubricSerializer, CommentSerializer
 from elasticsearch_dsl import Q
 from .documents import BbDocument
 
@@ -69,6 +69,12 @@ class RubricViewSet(ModelViewSet):
 
 	serializer_class = RubricSerializer
 	queryset = Rubric.objects.all()
+
+
+class CommentViewSet(ModelViewSet):
+
+	serializer_class = CommentSerializer
+	queryset = Comment.objects.all()
 
 
 class SearchResult(ListView):
