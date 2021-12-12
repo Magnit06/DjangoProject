@@ -19,7 +19,7 @@ services:
       context: ./docker/postgres
       dockerfile: Dockerfile
     container_name: postgressql
-    restart: always
+    #restart: always
     environment:
       PGUSER: "postgres"
       POSTGRES_PASSWORD: "rootroot"

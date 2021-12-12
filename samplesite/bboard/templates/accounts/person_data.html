@@ -1,0 +1,31 @@
+{% extends 'layout/basic.html' %}
+
+{% load bootstrap4 %}
+
+{% block title %}Личные данные {{some_user.username}}{% endblock %}
+
+{% block header %}Личные данные {{some_user.username}}{% endblock %}
+{% block subheader %}Просмотр личных данных.{% endblock %}
+
+{% block content %}
+<p class="text-justify">
+    <a class="link-info" title="Кликните, чтобы изменить данные" href="{% url 'edit_user_data' some_user.uuid %}">Изменить</a> данные.
+</p>
+<br>
+<hr>
+<p class="text-justify">{{some_user.username}}</p>
+<p class="text-justify">
+    Фамилия: {% if some_user.last_name %}{{some_user.last_name}}.{% else %}не заполнено.{% endif %}
+</p>
+<p class="text-justify">
+    Имя: {% if some_user.first_name %}{{some_user.first_name}}.{% else %}не заполнено.{% endif %}
+</p>
+<p class="text-justify">
+    Отчество: {% if some_user.middle_name %}{{some_user.middle_name}}.{% else %}не заполнено.{% endif %}
+</p>
+<p class="text-justify">
+    email: <a class="link-info" title="Открыть приложение почта" href="mailto:{{some_user.email}}">{{some_user.email}}</a></p>
+<p class="text-justify">
+    Телефон: {% if some_user.phone %}<a class="link-info" title="Позвонить" href="tel:{{some_user.phone}}">{{some_user.phone}}</a>.{% else %}не заполнено.{% endif %}
+</p>
+{% endblock %}

@@ -25,6 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
 
+# Auth User model
+AUTH_USER_MODEL = 'bboard.CustomUser'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
@@ -52,6 +55,7 @@ INSTALLED_APPS = [
 	'psycopg2',  # my add
 	'django_elasticsearch_dsl',  # my add
 	'bboard',  # my add
+	'api',  # my add
 	'bootstrap4',  # my add
 	'rest_framework',  # my add
 	'corsheaders',  # my add
@@ -179,3 +183,10 @@ ELASTICSEARCH_DSL = {
         'hosts': 'elasticsearch:9200'
     },
 }
+
+# указываем доступ по api с любого домена
+CORS_ORIGIN_ALLOW_URL = True
+CORS_URLS_REGEX = r'^/api/.*$'
+
+# url перенаправления после входа
+LOGIN_REDIRECT_URL = '/'

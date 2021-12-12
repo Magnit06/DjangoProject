@@ -1,9 +1,8 @@
 from random import choice
 
-from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 
-from bboard.models import Bb, Rubric, Comment
+from bboard.models import Bb, Rubric, Comment, CustomUser
 from bboard.tasks import create_rubrics, create_users, create_ads, create_comments
 
 
@@ -24,7 +23,7 @@ class Command(BaseCommand):
 		login_pass_admin = 'admin'
 
 		self.stdout.write(self.style.SUCCESS('Генерируем суперпользователя'))
-		User.objects.create_superuser(username=login_pass_admin, email="kfilipppov@mail.ru", password=login_pass_admin)
+		CustomUser.objects.create_superuser(username=login_pass_admin, email="kfilipppov@mail.ru", password=login_pass_admin)
 
 		self.stdout.write(self.style.SUCCESS('Генерируем первую рубрику "Без рубрики"'))
 		# далее процесс заполнения рубрик уйдет в параллель
@@ -40,5 +39,5 @@ class Command(BaseCommand):
 		self.stdout.write(self.style.SUCCESS('За процессом можете наблюдать а админ панели по адресу:\n'
 											 '127.0.0.1:8000/admin/\n'
 											 'Данные для входа:\n'
-											 f'Login: {User.objects.get(pk=1).username}\n'
-											 f'Password: {User.objects.get(pk=1).username}'))
+											 f'Login: {CustomUser.objects.get(pk=1).username}\n'
+											 f'Password: {CustomUser.objects.get(pk=1).username}'))

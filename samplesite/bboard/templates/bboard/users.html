@@ -2,58 +2,45 @@
 
 {% block title %}Список пользователей{% endblock %}
 
+{% block header %}Список пользователей.{% endblock %}
+
+<!--добавить в subheader нечего пока, поэтому просто переопределим-->
+{% block subheader %}{% endblock %}
+
 {% block content %}
-<table class="table table-striped table-hover" xmlns="http://www.w3.org/1999/html">
-    <thead>
-    <tr>
-        <th class="align-middle">
-            № п/п
-        </th>
-        <th class="align-middle">
-            Фамилия
-        </th>
-        <th class="align-middle">
-            Имя
-        </th>
-        <th class="align-middle">
-            Логин
-        </th>
-        <th class="align-middle">
-            email
-        </th>
-        <th class="align-middle">
-            Ссылка на профиль
-        </th>
-    </tr>
-    </thead>
-    <tbody>
+<div class="row">
     {% for us in all_users %}
-    {% if us.pk != user.pk %}
-    <tr>
-        <td>{{us.pk}}</td>
-        <td>{{us.last_name}}</td>
-        <td>{{us.first_name}}</td>
-        <td>{{us.username}}</td>
-        <td>{{us.email}}</td>
-        <td>Перейти в <a class="link-info" href="{% url 'users_profile_detail' us.pk %}">профиль</a> пользователя</td>
-    </tr>
+    {% if us.uuid != user.uuid and not us.is_superuser %}
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{us.username}}</h5>
+                <p class="card-subtitle mb-2 text-muted">{{us.email}}</p>
+                <p class="card-text">{{us.last_name}}</p>
+                <p class="card-text">{{us.first_name}}</p>
+                <a href="{% url 'user_ads' us.uuid %}" class="btn btn-primary">Объявления пользователя</a>
+            </div>
+        </div>
+    </div>
     {% endif %}
     {% endfor %}
-    </tbody>
-</table>
-<nav aria-label="My paginator">
-  <ul class="pagination">
-      {% if page.has_previous %}
-    <li class="page-link">
-      <a class="page-link" href="?page={{ page.previous_page_number }}">&lt;</a>
-    </li>
-      {% endif %}
-    <li class="page-link active" aria-current="page">
-      <a class="page-link" href="?page={{ page.number }}">{{page.number}} / {{page.paginator.num_pages}}</a>
-    </li>
-      {% if page.has_next %}
-    <li class="page-link"><a class="page-link" href="?page={{ page.next_page_number }}">&gt;</a></li>
-      {% endif %}
-  </ul>
+</div>
+{% endblock %}
+
+{% block paginator %}
+<nav class="pagination" aria-label="My paginator">
+    <ul class="pagination">
+        {% if page.has_previous %}
+        <li class="page-link">
+            <a class="page-link" href="?page={{ page.previous_page_number }}">&lt;</a>
+        </li>
+        {% endif %}
+        <li class="page-link active" aria-current="page">
+            <a class="page-link" href="?page={{ page.number }}">{{page.number}} / {{page.paginator.num_pages}}</a>
+        </li>
+        {% if page.has_next %}
+        <li class="page-link"><a class="page-link" href="?page={{ page.next_page_number }}">&gt;</a></li>
+        {% endif %}
+    </ul>
 </nav>
 {% endblock %}

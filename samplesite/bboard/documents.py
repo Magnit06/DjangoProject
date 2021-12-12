@@ -40,7 +40,6 @@ class BbDocument(Document):
             'content',
             'price',
             'published',
-            'last_changed',
         ]
         related_models = [Rubric]
 

@@ -8,47 +8,104 @@
     {% bootstrap_javascript jquery=True %}
     <meta charset="UTF-8">
     <title>{% block title %}Главная{% endblock %} :: Доска объявлений</title>
-    <!--    по причине использования бутстрапа свои стили удалил-->
-    <!--    <link rel="stylesheet" type="text/css" href="{% static 'bboard/style.css' %}">-->
+    <!--    в случае добавления своих стилей оставлю подключенным-->
+    <!--    <link rel="stylesheet" type="text/css" href="{% static 'bboard/css/style.css' %}">-->
 </head>
 <body>
 <!--фиксируем область навигации-->
 <div class="sticky-top bg-white">
-    <header>
-        <h1 class="mt-2 text-uppercase" align="center">Объявления</h1>
-    </header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'index' %}">Главная</a>
-        {% if user.is_authenticated %}
-        <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
-        <a class="nav-link" href="{% url 'users_list' %}">Список пользователей</a>
-        <a class="nav-link" href="{% url 'profile' %}">Мой профиль, {{user.username}}</a>
-        <a class="nav-link" href="{% url 'add' %}">Добавить</a>
-        {% else %}
-        <a class="nav-link" href="{% url 'login' %}">Войти</a>
-        {% endif %}
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Рубрики
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    {% for rubric in rubrics %}
-                    <a class="dropdown-item" href="{% url 'by_rubric' rubric.pk %}">{{ rubric.name }}</a>
-                    {% endfor %}
-                </div>
-            </li>
-        </ul>
-        <form class="d-flex" action="{% url 'search_result' %}" method="get">
-            <input name="q" class="form-control me-2" type="text" placeholder="Поиск объявлений" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Поиск</button>
-        </form>
+        <!--        меню для мобильных устройств-->
+        <a class="navbar-brand active" href="{% url 'index' %}">Главная</a>
+        <button class="navbar-toggle d-lg-none" type="button" data-toggle="collapse"
+                data-target="#collapse-responsive">Меню
+        </button>
+        <!--        конец меню для мобильных устройств-->
+        <div class="collapse navbar-collapse" id="collapse-responsive">
+            <ul class="nav navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Выйти</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users_list' %}">Список пользователей</a></li>
+                <li class="nav-item">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button"
+                               data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                Профиль
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
+                                <a class="dropdown-item" href="{% url 'user_ads' user.uuid %}">Мои объявления, {{user.username}}</a>
+                                <a class="dropdown-item" href="{% url 'person_data' user.uuid %}">Мои личные данные</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'add' %}">Добавить</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Войти</a></li>
+                {% endif %}
+                <li class="nav-item">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                Рубрики
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% for rubric in rubrics %}
+                                <a class="dropdown-item" href="{% url 'by_rubric' rubric.uuid %}">{{ rubric.name }}</a>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <form class="d-flex" action="{% url 'search_result' %}" method="get">
+                <input name="q" class="form-control me-2" type="text" placeholder="Поиск объявлений"
+                       aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Поиск</button>
+            </form>
+        </div>
     </nav>
 </div>
-<section class="m-2">
+
+<!--заголовок контента-->
+<main role="main">
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3">{% block header %}Добро пожаловать на проект доски объявлений!{% endblock %}</h1>
+            <p>{% block subheader %}На этом сайте можно ознокомиться со всей функциональностью,
+                которую я на данный момент попробовал в практике.{% endblock %}</p>
+        </div>
+    </div>
+</main>
+<!--Конец заголовка контента-->
+
+<!--Основной контент-->
+<div class="container">
     {% block content %}
     {% endblock %}
-</section>
+</div>
+<!--Конец основного контента-->
+
+<!--пагинация-->
+<div class="container mt-2">
+    <div class="d-flex justify-content-center">
+        {% block paginator %}
+        {% endblock %}
+    </div>
+</div>
+<!--цонец пагинации-->
+
+<!--копирайт/подвал-->
+<footer class="container">
+    <p class="text-center">&copy; Филиппов Н. В. e-mail: <a class="info" href="mailto:kfilipppov@mail.ru">kfilipppov@mail.ru</a>
+    </p>
+</footer>
+<!--копирайт/подвал-->
+
 </body>
 </html>

@@ -1,13 +1,25 @@
-{% extends "layout/basic.html" %}
+{% extends 'layout/basic.html' %}
+
+{% block title %}Объявления пользователя - {{some_user.username}}{% endblock %}
+
+{% block header %}Объявления пользователя {% if some_user.first_name and some_user.last_name %} {{ some_user.first_name }} {{ some_user.last_name }} {% else %}
+    {{ some_user.username }}{% endif %}.{% endblock %}
+{% block subheader %}Его объявления.{% endblock %}
 
 {% block content %}
+
+{% if bbs %}
+{% if some_user.uuid == user.uuid %}
+<p class="text-justify">
+    <a class="link-info" href="{% url 'add' %}">Добавить</a> ещё объявления.
+</p>
+{% endif %}
 <div class="row">
     {% for bb in bbs %}
     <div class="col-md-4 mb-2">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{bb.title}}</h5>
-                <p class="card-subtitle mb-2 text-muted"> Автор: {{bb.author}}</p>
                 <p class="card-text">{{bb.content|truncatechars:100}}</p>
                 <p class="text-left text-muted font-italic">Дата создания: {{bb.published|date:"d.m.Y H:i:s"}}</p>
                 <p class="text-left text-muted font-italic">Просмотров: {{bb.views_counter}}</p>
@@ -18,6 +30,13 @@
     </div>
     {% endfor %}
 </div>
+{% else %}
+{% if some_user.uuid == user.uuid %}
+<p class="text-justify">
+    Объявлений пока ещё нет, но вы можете их <a class="link-info" href="{% url 'add' %}">добавить</a>.
+</p>
+{% endif %}
+{% endif %}
 {% endblock %}
 
 {% block paginator %}

@@ -2,55 +2,34 @@
 
 {% load bootstrap4 %}
 
-{% block title %}{{ current_rubric.name }}{% endblock %}
+{% block title %}{{ current_rubric }}{% endblock %}
+
+{% block header %}Рубрика :: {{ bb.rubric.name }}{% endblock %}
+{% block subheader %}Подробное описание объяаления "{{bb.title}}".{% endblock %}
 
 {% block content %}
-<h2 class="ml-5 mt-5 mb-5 text-uppercase">
-    Рубрика :: {{ bb.rubric.name }}
-</h2>
-<table class="table table-striped table-hover" xmlns="http://www.w3.org/1999/html">
-    <thead>
-    <tr>
-        <th class="align-middle">
-            Название
-        </th>
-        <th class="align-middle">
-            Описание
-        </th>
-        <th class="align-middle">
-            Цена
-        </th>
-        <th class="align-middle">
-            Автор
-        </th>
-        <th class="align-middle">
-            Дата/время<br>публикации
-        </th>
-        <th class="align-middle">
-            Дата/время<br>последнего изменения записи
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr>
+<p class="badge badge-info b">Количество просмотров: {{bb.views_counter}}.</p>
+<p class="text-muted text-right font-italic">Автор: {{bb.author.username}}</p>
 
-            <td><h2>{{ bb.title }}</h2></td>
-            <td><p>{{ bb.content }}</p></td>
-            <td><p>{{ bb.price }} руб.</p></td>
-            <td><p>{{ bb.author.username }}</p></td>
-            <td><p>{{ bb.published|date:"d.m.Y H:i:s" }}</p></td>
-            <td><p>{{ bb.last_changed|date:"d.m.Y H:i:s" }}</p></td>
+<hr>
 
-        </tr>
-    </tbody>
-</table>
-<h4 class="m-5">Новый комментарий автора "{{user.username}}"</h4>
-<form class="form m-5" method="post">
+<h5 class="text-primary">{{bb.title}}</h5>
+<p class="text-justify">{{bb.content}}</p>
+<p class="font-italic text-success">Цена: {{bb.price}} &#8381;.</p>
+<p class="text-right text-muted font-italic">Дата создания: {{bb.published|date:"d.m.Y H:i:s"}}</p>
+
+<hr>
+
+<h5 class="text-info">Новый комментарий автора "{{user.username}}"</h5>
+
+<form class="form" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons submit='Добавить' %}{% endbuttons %}
 </form>
 
+<hr>
+<br>
 {% if comments %}
 <div class="mt-5">
 {% for comment in comments %}
